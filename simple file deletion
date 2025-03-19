@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# Specify the directory
+directory="/path/to/directory"
+
+# List of files to delete
+files=("file1.txt" "file2.txt" "file3.txt")
+
+# Loop through each file and delete it
+for file in "${files[@]}"; do
+    full_path="$directory/$file"
+    if [ -e "$full_path" ]; then
+        rm "$full_path"
+        echo "$full_path has been deleted."
+    else
+        echo "$full_path does not exist."
+    fi
+done
