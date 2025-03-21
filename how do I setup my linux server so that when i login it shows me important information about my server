@@ -1,0 +1,38 @@
+To display important server information on login, you can edit the /etc/motd file (Message Of The Day) or create a script in /etc/profile.d/ that runs on login, allowing you to customize the displayed information. 
+Here's a breakdown of how to achieve this:
+1. Using /etc/motd (Simple Method):
+Edit the file: Open /etc/motd with a text editor (e.g., sudo nano /etc/motd). 
+Add your information: Insert the information you want to display, such as hostname, IP address, uptime, etc. 
+Example:
+Code
+
+    Welcome to the server!
+    Hostname: $(hostname)
+    IP Address: $(ip a | grep -oP 'inet \K[\d.]+')
+    Uptime: $(uptime -s)
+Save the file: Save the changes and close the editor. 
+2. Using a Script in /etc/profile.d/ (More Flexible):
+Create a script: Create a new file in /etc/profile.d/ (e.g., sudo nano /etc/profile.d/server_info.sh).
+Make it executable: sudo chmod +x /etc/profile.d/server_info.sh.
+Add your commands: Write a script that displays the desired information. For example: 
+Code
+
+    #!/bin/bash
+    echo -e "\n"
+    echo -e "--------------------------------------------------------"
+    echo -e "Server Information:"
+    echo -e "--------------------------------------------------------"
+    echo -e "Hostname: $(hostname)"
+    echo -e "IP Address: $(ip a | grep -oP 'inet \K[\d.]+')"
+    echo -e "Uptime: $(uptime -s)"
+    echo -e "--------------------------------------------------------"
+    echo -e "\n"
+Save and test: Save the script and test it by logging in or running sudo bash /etc/profile.d/server_info.sh. 
+3. Additional Tips:
+lastlog command: You can use the lastlog command to display the last login information.
+uptime command: Use the uptime command to show the server's uptime.
+hostname command: Use the hostname command to display the server's hostname.
+ip a command: Use the ip a command to display the IP addresses.
+df -h command: Use the df -h command to display disk space usage.
+free -h command: Use the free -h command to display memory usage.
+Customization: You can customize the script to display any information you deem important, such as system load, disk usage, or recent log messages. 
