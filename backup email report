@@ -1,0 +1,37 @@
+#!/bin/bash
+
+# Justin Turner's backup report script
+# This script checks mulptiple direcotries to ensure that a file was generated from various applications 
+# to ensure that they recieved a backup file and then sends an email to user or group email the results.
+
+# Directories to check
+directories=("directory" "directory")
+
+# Email recipient
+recipient="user@mail.mil" # or group email of team
+
+# Initialize message
+message="Backup Check Report:\n"
+message+="\n"
+
+# Check each directory
+for dir in "${directories[@]}"; do
+        if [ -d "$dir" ]; then
+# Check for files modified in the last 24 hours
+                if find "$dir" -type f -mtime -1 | grep -q .; then
+                        message+="Success: Files were updated in $dir\n"
+                        message+=$(find "$dir" -type f -mtime -1 -exec ls -l {} \; | awk '{ print $5" "$9 }')
+                        message+="\n"
+                        message+="\n"
+                else
+                        message+="Fail: No updates in $dir\n"
+                        message+="\n"
+                fi
+       else
+                        message+="Error: Directory $dir does not exist\n"
+                        message+="\n"
+       fi
+done
+# Send the email
+#echo -e "$message"
+echo -e "$message" | mail -r "sender name and <email@mail.mil>" -s "Daily Backup Check" "$recipient"
