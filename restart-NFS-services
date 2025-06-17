@@ -1,0 +1,38 @@
+#!/bin/bash
+
+# root user check
+
+if [[ $EUID -eq 0 ]]; then
+        echo "Running as root"
+        echo
+else
+        echo " You need root privileges to run this script"
+        echo
+fi
+
+
+# this script will be used to reload or restart services related to nfs, instead of doing one by one
+
+echo
+echo
+
+for service in "nfs-utils" "nfs-server"
+do
+        systemctl reload-or-restart "$service"
+done
+
+echo
+echo
+
+# exit code test
+
+if [ $? -eq 0 ]; then
+        echo "service reloaded or restarted successfully!"
+else
+        echo "Something went wrong :("
+fi
+
+echo
+echo
+
+systemctl status nfs-utils ; systemctl status nfs-server
