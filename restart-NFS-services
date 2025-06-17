@@ -16,7 +16,7 @@ fi
 echo
 echo
 
-for service in "nfs-utils" "nfs-server"
+for service in "nfs-utils" "nfs-server" "rpcbind"
 do
         systemctl reload-or-restart "$service"
 done
@@ -35,4 +35,4 @@ fi
 echo
 echo
 
-systemctl status nfs-utils ; systemctl status nfs-server
+systemctl status nfs-utils ; systemctl status nfs-server ; systemctl status rpcbind
